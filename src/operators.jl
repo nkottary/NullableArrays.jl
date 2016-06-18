@@ -71,6 +71,7 @@ for op in (:+, :-, :!, :~, :abs, :abs2, :sqrt, :cbrt)
                            Nullable{R}($op(x.value))
             end
         end
+        $op(x::Nullable{Union{}}) = Nullable()
     end
 end
 
@@ -122,5 +123,8 @@ for op in (:+, :-, :*, :/, :%, :÷, :&, :|, :^, :<<, :>>, :(>>>),
                                         Nullable{R}($op(x.value, y.value))
             end
         end
+        $op(x::Nullable{Union{}}, y::Nullable{Union{}}) = Nullable()
+        $op{S}(x::Nullable{Union{}}, y::Nullable{S}) = Nullable{S}()
+        $op{S}(x::Nullable{S}, y::Nullable{Union{}}) = Nullable{S}()
     end
 end
